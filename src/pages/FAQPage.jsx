@@ -33,7 +33,7 @@ const FAQPage = () => {
             </div>
             <div className="mt-4">
               <h5 className="fw-semibold">¿Que pasa si el equipo se dana durante mi evento?</h5>
-              <p className="small-muted mb-0">Los danos se evaluan al momento de la devolucion y se descuentan del deposito de garantia. Si el costo excede el deposito, se factura la diferencia al cliente.</p>
+              <p className="small-muted mb-0">Los daños se evaluan al momento de la devolucion y se descuentan del deposito de garantia. Si el costo excede el deposito, se factura la diferencia al cliente.</p>
             </div>
             <div className="mt-4">
               <h5 className="fw-semibold">¿Puedo extender el periodo de renta?</h5>
