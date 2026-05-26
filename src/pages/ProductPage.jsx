@@ -141,8 +141,8 @@ const ProductPage = ({ user, addToCarrito, fechasRenta, setFechasRenta, showToas
             ) : (
               <div className="mt-3">
                 {errorMsg ? <div className="alert alert-danger">{errorMsg}</div> : null}
-                <button className="btn btn-terracotta w-100" onClick={handleAdd}>
-                  {isCliente ? 'Anadir al carrito' : 'Inicia sesion para rentar'}
+                <button className="btn btn-terracotta w-100" onClick={handleAdd} disabled={!(equipo.disponibleActual ?? equipo.cantidadTotalRentable ?? 0)}>
+                  {!isCliente ? 'Inicia sesion para rentar' : !(equipo.disponibleActual ?? equipo.cantidadTotalRentable ?? 0) ? 'Agotado' : 'Anadir al carrito'}
                 </button>
               </div>
             )}

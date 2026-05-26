@@ -65,11 +65,12 @@ function App() {
   }
 
   const addToCarrito = useCallback((equipo, cantidad = 1, fechaInicio = '', fechaFin = '', maxDisponible = 999) => {
+    if (cantidad > maxDisponible) return
     setCarrito((prev) => {
       const existing = prev.find((item) => item.id === equipo.id)
       if (existing) {
         const nuevaCant = existing.cantidad + cantidad
-        if (nuevaCant > (existing.maxDisponible || 999)) return prev
+        if (nuevaCant > maxDisponible) return prev
         return prev.map((item) =>
           item.id === equipo.id
             ? { ...item, cantidad: nuevaCant }
@@ -85,7 +86,7 @@ function App() {
           cantidad,
           fechaInicio,
           fechaFin,
-          maxDisponible: maxDisponible,
+          maxDisponible,
         },
       ]
     })
