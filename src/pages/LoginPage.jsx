@@ -40,7 +40,7 @@ const LoginPage = ({ onLogin }) => {
       onLogin({ ...response.data, tipo: form.tipo })
       setStatus({ loading: false, error: '', message: response.data.mensaje || 'Login exitoso.' })
     } catch (error) {
-      const message = error?.response?.data?.mensaje || 'No se pudo iniciar sesion.'
+      const message = error?.response?.data?.mensaje || 'No se pudo iniciar sesión.'
       setStatus({ loading: false, error: message, message: '' })
     }
   }
@@ -66,7 +66,7 @@ const LoginPage = ({ onLogin }) => {
       <div className="app-hero">
         <h1 className="app-title fade-in">Acceso</h1>
         <p className="app-subtitle fade-in-delay">
-          Inicia sesion para revisar el catalogo disponible y gestionar tu alquiler.
+          Inicia sesión para revisar el catálogo disponible y gestionar tu alquiler.
         </p>
       </div>
 
@@ -109,7 +109,7 @@ const LoginPage = ({ onLogin }) => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Telefono</label>
+                    <label className="form-label">Teléfono</label>
                     <input
                       className="form-control input-cream"
                       name="telefono"
@@ -130,7 +130,7 @@ const LoginPage = ({ onLogin }) => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Direccion</label>
+                    <label className="form-label">Dirección</label>
                     <textarea
                       className="form-control input-cream"
                       rows={2}
@@ -163,13 +163,13 @@ const LoginPage = ({ onLogin }) => {
                 <p className="mt-3 mb-0 small-muted">
                   ¿Ya tienes cuenta?{' '}
                   <button className="btn btn-link p-0" onClick={() => setMostrarRegistro(false)}>
-                    Inicia sesion
+                    Inicia sesión
                   </button>
                 </p>
               </>
             ) : (
               <>
-                <h2 className="section-title">Iniciar sesion</h2>
+                <h2 className="section-title">Iniciar sesión</h2>
                 <p className="small-muted">Ingresa tus credenciales.</p>
                 <form className="mt-4" onSubmit={handleSubmit}>
                   <div className="mb-3">

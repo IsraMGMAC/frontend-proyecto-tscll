@@ -122,7 +122,7 @@ const AdminResumen = () => {
         <h5 className="fw-semibold mb-3">Productos</h5>
         <div className="table-responsive">
           <table className="table align-middle">
-            <thead><tr><th>Producto</th><th>SKU</th><th>Precio/dia</th><th>Optimos</th><th>Con detalles</th><th>Mantenimiento</th><th>Inservible</th><th>Disponibles</th><th>Fisico</th></tr></thead>
+            <thead><tr><th>Producto</th><th>SKU</th><th>Precio/día</th><th>Optimos</th><th>Con detalles</th><th>Mantenimiento</th><th>Inservible</th><th>Disponibles</th><th>Fisico</th></tr></thead>
             <tbody>
               {filtrados.map((e) => (
                 <tr key={e.id}>

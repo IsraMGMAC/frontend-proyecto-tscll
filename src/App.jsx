@@ -15,7 +15,6 @@ import ProfilePage from './pages/ProfilePage'
 
 const CART_KEY = 'renta_eventos_carrito'
 const USER_KEY = 'renta_eventos_user'
-const FECHAS_KEY = 'renta_eventos_fechas'
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -26,10 +25,7 @@ function App() {
     const saved = localStorage.getItem(CART_KEY)
     return saved ? JSON.parse(saved) : []
   })
-  const [fechasRenta, setFechasRenta] = useState(() => {
-    const saved = localStorage.getItem(FECHAS_KEY)
-    return saved ? JSON.parse(saved) : { fechaInicio: '', fechaFin: '' }
-  })
+  const [fechasRenta, setFechasRenta] = useState({ fechaInicio: '', fechaFin: '' })
   const [toast, setToast] = useState({ show: false, message: '' })
   const navigate = useNavigate()
 
@@ -41,10 +37,6 @@ function App() {
   useEffect(() => {
     localStorage.setItem(CART_KEY, JSON.stringify(carrito))
   }, [carrito])
-
-  useEffect(() => {
-    localStorage.setItem(FECHAS_KEY, JSON.stringify(fechasRenta))
-  }, [fechasRenta])
 
   useEffect(() => {
     if (user) {

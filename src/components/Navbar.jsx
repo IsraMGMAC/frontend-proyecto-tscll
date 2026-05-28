@@ -23,7 +23,7 @@ const Navbar = ({ user, onLogout, carritoCount = 0 }) => {
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0 gap-2">
             <li className="nav-item">
               <NavLink to="/" className={({ isActive }) => `nav-link px-3 rounded-pill ${isActive ? 'bg-dark text-white' : ''}`}>
-                Catalogo
+                Catálogo
               </NavLink>
             </li>
             <li className="nav-item">
@@ -70,12 +70,12 @@ const Navbar = ({ user, onLogout, carritoCount = 0 }) => {
                   Perfil
                 </NavLink>
                 <button className="btn btn-sm btn-outline-dark" onClick={onLogout}>
-                  Cerrar sesion
+                  Cerrar sesión
                 </button>
               </>
             ) : (
               <NavLink to="/login" className="btn btn-sm btn-terracotta">
-                Iniciar sesion
+                Iniciar sesión
               </NavLink>
             )}
           </div>

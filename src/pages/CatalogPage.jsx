@@ -99,9 +99,9 @@ const CatalogPage = ({ user, addToCarrito, fechasRenta, setFechasRenta, showToas
   return (
     <div className="container py-4">
       <div className="app-hero">
-        <h1 className="app-title fade-in">Catalogo de equipos</h1>
+        <h1 className="app-title fade-in">Catálogo de equipos</h1>
         <p className="app-subtitle fade-in-delay">
-          Explora nuestro inventario de bocinas, microfonos, iluminacion y mobiliario para eventos.
+          Explora nuestro inventario de bocinas, micrófonos, iluminación y mobiliario para eventos.
         </p>
       </div>
 

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import api from '../services/api'
 import { formatCurrency } from '../utils/currency'
 
 const slugFromName = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
 const emptyEquipoForm = {
-  id: null, categoriaId: '', sku: '', nombre: '', descripcion: '',
+  id: null, categoriaId: null, sku: '', nombre: '', descripcion: '',
   cantidadOptima: 0, cantidadConDetalles: 0, cantidadMantenimiento: 0,
   cantidadInservible: 0, precioRentaDia: 0, visibleWeb: true,
 }
@@ -20,6 +21,7 @@ const AdminInventario = () => {
   const [catForm, setCatForm] = useState(emptyCategoriaForm)
   const [mostrarCatForm, setMostrarCatForm] = useState(false)
   const [imagenes, setImagenes] = useState([])
+  const [imgKey, setImgKey] = useState(0)
   const [subiendo, setSubiendo] = useState(false)
   const [mostrarModal, setMostrarModal] = useState(false)
 
@@ -46,9 +48,9 @@ const AdminInventario = () => {
 
   useEffect(() => {
     cargarImagenes(equipoForm.id)
-  }, [equipoForm.id])
+  }, [equipoForm.id, imgKey])
 
-  const equiposFiltrados = equipos.filter((e) => e.categoriaId === catSeleccionada)
+  const equiposFiltrados = equipos.filter((e) => !catSeleccionada || e.categoriaId === catSeleccionada)
 
   const handleEquipoChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -56,7 +58,7 @@ const AdminInventario = () => {
   }
 
   const abrirModalNuevo = () => {
-    setEquipoForm(emptyEquipoForm)
+    setEquipoForm({ ...emptyEquipoForm, categoriaId: catSeleccionada })
     setImagenes([])
     setMostrarModal(true)
   }
@@ -90,7 +92,7 @@ const AdminInventario = () => {
       await api.post(`/equipos/${equipoForm.id}/imagenes`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      await cargarImagenes(equipoForm.id)
+      setImgKey((k) => k + 1)
       load()
     } catch {}
     setSubiendo(false)
@@ -117,7 +119,7 @@ const AdminInventario = () => {
   const handleSubmitEquipo = async (e) => {
     e.preventDefault()
     const payload = {
-      categoriaId: catSeleccionada, sku: equipoForm.sku, nombre: equipoForm.nombre,
+      categoriaId: Number(equipoForm.categoriaId), sku: equipoForm.sku, nombre: equipoForm.nombre,
       slug: slugFromName(equipoForm.nombre), descripcion: equipoForm.descripcion,
       cantidadOptima: Number(equipoForm.cantidadOptima),
       cantidadConDetalles: Number(equipoForm.cantidadConDetalles), cantidadMantenimiento: Number(equipoForm.cantidadMantenimiento),
@@ -237,44 +239,44 @@ const AdminInventario = () => {
         </div>
       </div>
 
-      {catSeleccionada && (
-        <>
-          <div className="d-flex align-items-center justify-content-between mb-3">
-            <h5 className="fw-semibold mb-0">Productos</h5>
-            <button className="btn btn-dark btn-sm" onClick={abrirModalNuevo}>+ Nuevo producto</button>
-          </div>
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <h5 className="fw-semibold mb-0">Productos {catSeleccionada ? `(${categorias.find(c => c.id === catSeleccionada)?.nombre})` : ''}</h5>
+        <button className="btn btn-dark btn-sm" onClick={abrirModalNuevo}>+ Nuevo producto</button>
+      </div>
 
-          <div className="table-responsive">
-            <table className="table align-middle">
-              <thead><tr><th>Nombre</th><th>SKU</th><th>Disponible</th><th>Precio/dia</th><th>Visible</th><th></th></tr></thead>
-              <tbody>
-                {equiposFiltrados.map((equipo) => (
-                  <tr key={equipo.id}>
-                    <td><div className="fw-semibold">{equipo.nombre}</div><div className="small-muted">{equipo.categoriaNombre}</div></td>
-                    <td>{equipo.sku}</td>
-                    <td>{equipo.cantidadTotalRentable}</td>
-                    <td>{formatCurrency(equipo.precioRentaDia)}</td>
-                    <td>
-                      <button className={`btn btn-sm ${equipo.visibleWeb ? 'btn-success' : 'btn-secondary'}`} onClick={() => handleToggleVisible(equipo)} title={equipo.visibleWeb ? 'Visible' : 'Oculto'}>
-                        {equipo.visibleWeb ? '✓' : '✕'}
-                      </button>
-                    </td>
-                    <td className="text-end">
-                      <div className="d-flex gap-2 justify-content-end">
-                        <button className="btn btn-outline-dark btn-sm" onClick={() => handleEditEquipo(equipo)}>Editar</button>
-                        <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteEquipo(equipo.id)}>Eliminar</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
+      <div className="table-responsive">
+        <table className="table align-middle">
+          <thead><tr><th>Nombre</th><th>SKU</th><th>Disponible</th><th>Precio/día</th><th>Visible</th><th></th></tr></thead>
+          <tbody>
+            {equiposFiltrados.length === 0 ? (
+              <tr><td colSpan={6} className="text-center small-muted py-3">No hay productos.</td></tr>
+            ) : (
+              equiposFiltrados.map((equipo) => (
+                <tr key={equipo.id}>
+                  <td><div className="fw-semibold">{equipo.nombre}</div><div className="small-muted">{equipo.categoriaNombre}</div></td>
+                  <td>{equipo.sku}</td>
+                  <td>{equipo.cantidadTotalRentable}</td>
+                  <td>{formatCurrency(equipo.precioRentaDia)}</td>
+                  <td>
+                    <button className={`btn btn-sm ${equipo.visibleWeb ? 'btn-success' : 'btn-secondary'}`} onClick={() => handleToggleVisible(equipo)} title={equipo.visibleWeb ? 'Visible' : 'Oculto'}>
+                      {equipo.visibleWeb ? '✓' : '✕'}
+                    </button>
+                  </td>
+                  <td className="text-end">
+                    <div className="d-flex gap-2 justify-content-end">
+                      <button className="btn btn-outline-dark btn-sm" onClick={() => handleEditEquipo(equipo)}>Editar</button>
+                      <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteEquipo(equipo.id)}>Eliminar</button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      {mostrarModal && (
-        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 1050, background: 'rgba(0,0,0,0.5)' }} onClick={cerrarModal}>
+      {mostrarModal ? createPortal(
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }} onClick={cerrarModal}>
           <div className="card-surface p-4" style={{ width: '90%', maxWidth: 720, maxHeight: '90vh', overflowY: 'auto' }} onClick={(e) => e.stopPropagation()}>
             <div className="d-flex align-items-center justify-content-between mb-3">
               <h5 className="fw-semibold mb-0">{equipoForm.id ? 'Editar equipo' : 'Nuevo equipo'}</h5>
@@ -282,9 +284,10 @@ const AdminInventario = () => {
             </div>
             <form onSubmit={handleSubmitEquipo}>
               <div className="row g-2">
-                <div className="col-4"><label className="form-label">SKU</label><input className="form-control input-cream" name="sku" value={equipoForm.sku} onChange={handleEquipoChange} required /></div>
-                <div className="col-4"><label className="form-label">Nombre</label><input className="form-control input-cream" name="nombre" value={equipoForm.nombre} onChange={handleEquipoChange} required /></div>
-                <div className="col-4"><label className="form-label">Precio/dia</label><input className="form-control input-cream" type="number" step="0.01" name="precioRentaDia" value={equipoForm.precioRentaDia} onChange={handleEquipoChange} required /></div>
+                <div className="col-6 col-lg-3"><label className="form-label">Categoria</label><select className="form-select input-cream" name="categoriaId" value={equipoForm.categoriaId || ''} onChange={handleEquipoChange} required><option value="">Seleccionar...</option>{categorias.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}</select></div>
+                <div className="col-6 col-lg-3"><label className="form-label">SKU</label><input className="form-control input-cream" name="sku" value={equipoForm.sku} onChange={handleEquipoChange} required /></div>
+                <div className="col-6 col-lg-3"><label className="form-label">Nombre</label><input className="form-control input-cream" name="nombre" value={equipoForm.nombre} onChange={handleEquipoChange} required /></div>
+                <div className="col-6 col-lg-3"><label className="form-label">Precio/día</label><input className="form-control input-cream" type="number" step="0.01" name="precioRentaDia" value={equipoForm.precioRentaDia} onChange={handleEquipoChange} required /></div>
                 <div className="col-12"><label className="form-label">Descripcion</label><textarea className="form-control input-cream" rows={2} name="descripcion" value={equipoForm.descripcion} onChange={handleEquipoChange} required /></div>
                 <div className="col-3"><label className="form-label">Optimos</label><input className="form-control input-cream" type="number" name="cantidadOptima" value={equipoForm.cantidadOptima} onChange={handleEquipoChange} /></div>
                 <div className="col-3"><label className="form-label">Con detalles</label><input className="form-control input-cream" type="number" name="cantidadConDetalles" value={equipoForm.cantidadConDetalles} onChange={handleEquipoChange} /></div>
@@ -292,7 +295,7 @@ const AdminInventario = () => {
                 <div className="col-3"><label className="form-label">Inservible</label><input className="form-control input-cream" type="number" name="cantidadInservible" value={equipoForm.cantidadInservible} onChange={handleEquipoChange} /></div>
                 <div className="col-12 d-flex align-items-center gap-3 mt-2">
                   <div className="form-check"><input className="form-check-input" type="checkbox" name="visibleWeb" checked={equipoForm.visibleWeb} onChange={handleEquipoChange} /><label className="form-check-label">Visible</label></div>
-                  <button className="btn btn-terracotta btn-sm" type="submit" disabled={!equipoForm.sku || !equipoForm.nombre || !equipoForm.precioRentaDia || !equipoForm.descripcion}>{equipoForm.id ? 'Guardar' : 'Registrar'}</button>
+                  <button className="btn btn-terracotta btn-sm" type="submit" disabled={!equipoForm.sku || !equipoForm.nombre || !equipoForm.precioRentaDia || !equipoForm.descripcion || !equipoForm.categoriaId}>{equipoForm.id ? 'Guardar' : 'Registrar'}</button>
                   <button className="btn btn-outline-dark btn-sm" type="button" onClick={cerrarModal}>Cancelar</button>
                 </div>
               </div>
@@ -304,7 +307,7 @@ const AdminInventario = () => {
                   <div className="d-flex flex-wrap gap-2 mb-2">
                     {imagenes.map((img) => (
                       <div key={img.id} className="position-relative" style={{ width: 100, height: 100 }}>
-                        <img src={img.url} alt="" className="w-100 h-100 rounded border" style={{ objectFit: 'cover' }} />
+                        <img src={`${img.url}?t=${imgKey}`} alt="" className="w-100 h-100 rounded border" style={{ objectFit: 'cover' }} />
                         <div className="position-absolute top-0 end-0 d-flex gap-1 m-1">
                           {!img.esPrincipal && (
                             <button className="btn btn-sm btn-light border py-0 px-1 fs-6" onClick={() => handleSetPrincipal(img.id)} title="Principal">★</button>
@@ -327,8 +330,9 @@ const AdminInventario = () => {
               )}
             </div>
           </div>
-        </div>
-      )}
+        </div>,
+        document.body
+      ) : null}
     </div>
   )
 }

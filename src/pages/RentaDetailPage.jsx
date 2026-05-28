@@ -100,7 +100,7 @@ const RentaDetailPage = ({ user }) => {
           <button className="btn btn-outline-danger btn-sm mt-2" onClick={handleCancel}>
             Cancelar reserva
           </button>
-          <div className="small-muted mt-1">Reembolso del 100% (mas de 48 hrs de anticipacion)</div>
+          <div className="small-muted mt-1">Reembolso del 100% (mas de 48 hrs de anticipación)</div>
           </>
         ) : null}
         {renta.estado === 'Pendiente' && diasParaInicio >= 1 && diasParaInicio <= 2 ? (
@@ -108,11 +108,11 @@ const RentaDetailPage = ({ user }) => {
           <button className="btn btn-outline-danger btn-sm mt-2" onClick={handleCancel}>
             Cancelar reserva (50% reembolso)
           </button>
-          <div className="small-muted mt-1">Entre 24 y 48 hrs de anticipacion — reembolso del 50%</div>
+          <div className="small-muted mt-1">Entre 24 y 48 hrs de anticipación — reembolso del 50%</div>
           </>
         ) : null}
         {renta.estado === 'Pendiente' && diasParaInicio < 1 ? (
-          <div className="small-muted mt-2">No se puede cancelar. Menos de 24 hrs de anticipacion — no aplica reembolso.</div>
+          <div className="small-muted mt-2">No se puede cancelar. Menos de 24 hrs de anticipación — no aplica reembolso.</div>
         ) : null}
         {cancelMsg.error ? <div className="alert alert-danger mt-2">{cancelMsg.error}</div> : null}
         {cancelMsg.success ? <div className="alert alert-success mt-2">{cancelMsg.success}</div> : null}
@@ -133,7 +133,7 @@ const RentaDetailPage = ({ user }) => {
               </div>
               {renta.fechaDevolucionReal ? (
                 <div className="d-flex justify-content-between mb-2">
-                  <span className="small-muted">Devolucion real</span>
+                  <span className="small-muted">Devolución real</span>
                   <span>{new Date(renta.fechaDevolucionReal).toLocaleDateString()}</span>
                 </div>
               ) : null}
@@ -143,7 +143,7 @@ const RentaDetailPage = ({ user }) => {
               </div>
               {renta.direccionEnvio ? (
                 <div className="d-flex justify-content-between mb-2">
-                  <span className="small-muted">Direccion</span>
+                  <span className="small-muted">Dirección</span>
                   <span>{renta.direccionEnvio}</span>
                 </div>
               ) : null}
@@ -161,7 +161,17 @@ const RentaDetailPage = ({ user }) => {
             {resumen ? (
               <div className="mt-3">
                 <div className="d-flex justify-content-between mb-2">
-                  <span className="small-muted">Total de la renta</span>
+                  <span className="small-muted">Renta</span>
+                  <span>{formatCurrency(resumen.totalAlquiler - (resumen.costoEnvio || 0))}</span>
+                </div>
+                {resumen.costoEnvio > 0 ? (
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="small-muted">Envío</span>
+                  <span>{formatCurrency(resumen.costoEnvio)}</span>
+                </div>
+                ) : null}
+                <div className="d-flex justify-content-between mb-2 fw-semibold border-top pt-2">
+                  <span>Total</span>
                   <span>{formatCurrency(resumen.totalAlquiler)}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
@@ -224,7 +234,7 @@ const RentaDetailPage = ({ user }) => {
                   </div>
                   {detalle.cantidadDevueltaBien > 0 || detalle.cantidadDanada > 0 || detalle.cantidadPerdida > 0 ? (
                     <div className="small-muted mt-1">
-                      Devuelto: {detalle.cantidadDevueltaBien} bien, {detalle.cantidadDanada} danado{detalle.cantidadDanada !== 1 ? 's' : ''}, {detalle.cantidadPerdida} perdido{detalle.cantidadPerdida !== 1 ? 's' : ''}
+                      Devuelto: {detalle.cantidadDevueltaBien} bien, {detalle.cantidadDanada} dañado{detalle.cantidadDanada !== 1 ? 's' : ''}, {detalle.cantidadPerdida} perdido{detalle.cantidadPerdida !== 1 ? 's' : ''}
                     </div>
                   ) : null}
                 </div>
@@ -232,15 +242,19 @@ const RentaDetailPage = ({ user }) => {
             </div>
             <hr />
             <div className="d-flex justify-content-between fs-5">
-              <span className="fw-bold">Total</span>
+              <span className="fw-bold">Total renta</span>
               <span className="fw-bold">{formatCurrency(renta.totalRenta)}</span>
             </div>
             {renta.costoEnvio > 0 ? (
-              <div className="d-flex justify-content-between small-muted">
-                <span>Incluye envio</span>
+              <div className="d-flex justify-content-between">
+                <span>Envío</span>
                 <span>{formatCurrency(renta.costoEnvio)}</span>
               </div>
             ) : null}
+            <div className="d-flex justify-content-between fs-5 fw-bold border-top pt-2">
+              <span>Total</span>
+              <span>{formatCurrency((renta.totalRenta || 0) + (renta.costoEnvio || 0))}</span>
+            </div>
             {renta.depositoGarantia > 0 ? (
               <div className="d-flex justify-content-between small-muted">
                 <span>Deposito garantia</span>

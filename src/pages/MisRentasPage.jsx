@@ -27,9 +27,9 @@ const MisRentasPage = ({ user }) => {
       <div className="container py-5">
         <div className="card-surface p-4 text-center">
           <h2 className="section-title">Acceso restringido</h2>
-          <p className="small-muted">Inicia sesion como cliente para ver tus rentas.</p>
+          <p className="small-muted">Inicia sesión como cliente para ver tus rentas.</p>
           <button className="btn btn-terracotta mt-2" onClick={() => navigate('/login')}>
-            Iniciar sesion
+            Iniciar sesión
           </button>
         </div>
       </div>
@@ -92,7 +92,7 @@ const MisRentasPage = ({ user }) => {
         <div className="card-surface p-4 text-center">
           <p className="small-muted">No tienes rentas registradas.</p>
           <button className="btn btn-terracotta mt-2" onClick={() => navigate('/')}>
-            Ir al catalogo
+            Ir al catálogo
           </button>
         </div>
       ) : (

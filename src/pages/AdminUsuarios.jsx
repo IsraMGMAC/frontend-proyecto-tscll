@@ -62,10 +62,10 @@ const AdminUsuarios = () => {
               <div className="col-4"><label className="form-label">Nombre</label><input className="form-control input-cream" name="nombre" value={form.nombre} onChange={handleChange} required /></div>
               <div className="col-4"><label className="form-label">Apellido paterno</label><input className="form-control input-cream" name="apellidoPaterno" value={form.apellidoPaterno} onChange={handleChange} required /></div>
               <div className="col-4"><label className="form-label">Apellido materno</label><input className="form-control input-cream" name="apellidoMaterno" value={form.apellidoMaterno} onChange={handleChange} required /></div>
-              <div className="col-4"><label className="form-label">Telefono</label><input className="form-control input-cream" name="telefono" value={form.telefono} onChange={handleChange} required /></div>
+              <div className="col-4"><label className="form-label">Teléfono</label><input className="form-control input-cream" name="telefono" value={form.telefono} onChange={handleChange} required /></div>
               <div className="col-4"><label className="form-label">Email</label><input className="form-control input-cream" type="email" name="email" value={form.email} onChange={handleChange} required /></div>
               <div className="col-4"><label className="form-label">Contrasena</label><input className="form-control input-cream" type="password" name="passwordHash" value={form.passwordHash} onChange={handleChange} required /></div>
-              <div className="col-12"><label className="form-label">Direccion</label><textarea className="form-control input-cream" rows={2} name="direccion" value={form.direccion} onChange={handleChange} /></div>
+              <div className="col-12"><label className="form-label">Dirección</label><textarea className="form-control input-cream" rows={2} name="direccion" value={form.direccion} onChange={handleChange} /></div>
             </div>
             <button className="btn btn-terracotta btn-sm mt-2" disabled={status.loading}>{status.loading ? 'Registrando...' : 'Registrar'}</button>
             {status.error ? <div className="alert alert-danger mt-2">{status.error}</div> : null}
@@ -76,7 +76,7 @@ const AdminUsuarios = () => {
 
       <div className="table-responsive">
         <table className="table align-middle">
-          <thead><tr><th>Nombre</th><th>Email</th><th>Telefono</th><th>Registro</th><th></th></tr></thead>
+          <thead><tr><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Registro</th><th></th></tr></thead>
           <tbody>
             {clientes.map((c) => (
               <tr key={c.id}>

@@ -66,7 +66,7 @@ const ProductPage = ({ user, addToCarrito, fechasRenta, setFechasRenta, showToas
   return (
     <div className="container py-4">
       <button className="btn btn-outline-dark btn-sm mb-4" onClick={() => navigate('/')}>
-        &larr; Volver al catalogo
+        &larr; Volver al catálogo
       </button>
 
       <div className="row g-4">
@@ -120,7 +120,7 @@ const ProductPage = ({ user, addToCarrito, fechasRenta, setFechasRenta, showToas
             <div className="d-flex flex-wrap align-items-center gap-4 mt-3">
               <div>
                 <span className="display-6 price-tag">{formatCurrency(equipo.precioRentaDia)}</span>
-                <span className="small-muted"> por dia</span>
+                <span className="small-muted"> por día</span>
               </div>
               <div>
                 <div className="small-muted">Disponibles</div>
@@ -142,7 +142,7 @@ const ProductPage = ({ user, addToCarrito, fechasRenta, setFechasRenta, showToas
               <div className="mt-3">
                 {errorMsg ? <div className="alert alert-danger">{errorMsg}</div> : null}
                 <button className="btn btn-terracotta w-100" onClick={handleAdd} disabled={!(equipo.disponibleActual ?? equipo.cantidadTotalRentable ?? 0)}>
-                  {!isCliente ? 'Inicia sesion para rentar' : !(equipo.disponibleActual ?? equipo.cantidadTotalRentable ?? 0) ? 'Agotado' : 'Anadir al carrito'}
+                  {!isCliente ? 'Inicia sesión para rentar' : !(equipo.disponibleActual ?? equipo.cantidadTotalRentable ?? 0) ? 'Agotado' : 'Anadir al carrito'}
                 </button>
               </div>
             )}

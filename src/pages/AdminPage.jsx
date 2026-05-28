@@ -19,7 +19,7 @@ const AdminPage = ({ user }) => {
       <div className="container py-5">
         <div className="card-surface p-4 text-center">
           <h2 className="section-title">Acceso restringido</h2>
-          <p className="small-muted">Inicia sesion como administrador.</p>
+          <p className="small-muted">Inicia sesión como administrador.</p>
         </div>
       </div>
     )
@@ -29,7 +29,7 @@ const AdminPage = ({ user }) => {
     <div className="container py-4">
       <div className="app-hero">
         <h1 className="app-title fade-in">Panel de administracion</h1>
-        <p className="app-subtitle fade-in-delay">Gestiona usuarios, pedidos, inventario y mas.</p>
+        <p className="app-subtitle fade-in-delay">Gestiona usuarios, pedidos, inventario y más.</p>
       </div>
 
       <div className="row g-4">

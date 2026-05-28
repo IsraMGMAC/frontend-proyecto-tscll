@@ -96,8 +96,8 @@ const ProfilePage = ({ user }) => {
                 <div className="mb-2"><label className="form-label">Apellido materno</label><input className="form-control input-cream" value={form.apellidoMaterno} onChange={(e) => setForm({ ...form, apellidoMaterno: e.target.value })} required /></div>
                 {isCliente && (
                   <>
-                    <div className="mb-2"><label className="form-label">Telefono</label><input className="form-control input-cream" value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })} required /></div>
-                    <div className="mb-2"><label className="form-label">Direccion</label><textarea className="form-control input-cream" rows={2} value={form.direccion} onChange={(e) => setForm({ ...form, direccion: e.target.value })} /></div>
+                    <div className="mb-2"><label className="form-label">Teléfono</label><input className="form-control input-cream" value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })} required /></div>
+                    <div className="mb-2"><label className="form-label">Dirección</label><textarea className="form-control input-cream" rows={2} value={form.direccion} onChange={(e) => setForm({ ...form, direccion: e.target.value })} /></div>
                   </>
                 )}
                 <button className="btn btn-terracotta w-100 mt-2" disabled={status.loading}>{status.loading ? 'Guardando...' : 'Guardar cambios'}</button>
@@ -110,8 +110,8 @@ const ProfilePage = ({ user }) => {
                 <div className="d-flex justify-content-between py-2 border-bottom"><span className="small-muted">Email</span><span>{perfil.email}</span></div>
                 {isCliente && (
                   <>
-                    <div className="d-flex justify-content-between py-2 border-bottom"><span className="small-muted">Telefono</span><span>{perfil.telefono}</span></div>
-                    <div className="d-flex justify-content-between py-2"><span className="small-muted">Direccion</span><span>{perfil.direccion || 'Sin registrar'}</span></div>
+                    <div className="d-flex justify-content-between py-2 border-bottom"><span className="small-muted">Teléfono</span><span>{perfil.telefono}</span></div>
+                    <div className="d-flex justify-content-between py-2"><span className="small-muted">Dirección</span><span>{perfil.direccion || 'Sin registrar'}</span></div>
                   </>
                 )}
                 {!isCliente && (
